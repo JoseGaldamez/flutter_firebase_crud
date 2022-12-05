@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class AddNamePage extends StatefulWidget {
   const AddNamePage({super.key});
-
   @override
   State<AddNamePage> createState() => _AddNamePageState();
 }
