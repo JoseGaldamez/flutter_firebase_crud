@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Material App Bar'),
+        title: const Text('Firebase CRUD'),
       ),
       body: FutureBuilder(
           future: getPeople(),
