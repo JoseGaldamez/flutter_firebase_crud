@@ -1,3 +1,4 @@
+import 'package:crud/pages/edit_name_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const Home(),
         '/add': (context) => const AddNamePage(),
+        '/edit': (context) => const EditNamePage(),
       },
     );
   }
