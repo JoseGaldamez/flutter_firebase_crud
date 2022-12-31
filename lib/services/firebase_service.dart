@@ -6,9 +6,9 @@ Future<List> getPeople() async {
   List people = [];
   QuerySnapshot querySnapshot = await db.collection('people').get();
   for (var doc in querySnapshot.docs) {
-    final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    final person = {
-      "name": data['name'],
+    Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+    Map person = {
+      "name": data["name"],
       "uid": doc.id,
     };
 
@@ -23,6 +23,6 @@ Future<void> addPeople(String name) async {
 }
 
 // Actualizar un name en base de datos
-Future<void> updatePeople(String uid, String newName) async {
-  await db.collection("people").doc(uid).set({"name": newName});
+Future<void> updatePeople(String uid, String name) async {
+  await db.collection("people").doc(uid).set({"name": name});
 }

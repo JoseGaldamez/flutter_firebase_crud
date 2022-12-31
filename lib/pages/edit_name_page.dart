@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:crud/services/firebase_service.dart';
+
+import '../services/firebase_service.dart';
+// import 'package:crud/services/firebase_service.dart';
 
 class EditNamePage extends StatefulWidget {
   const EditNamePage({super.key});
@@ -12,7 +14,7 @@ class _EditNamePageState extends State<EditNamePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
     nameController.text = arguments['name'];
 
     return Scaffold(
@@ -26,8 +28,12 @@ class _EditNamePageState extends State<EditNamePage> {
             TextField(
               controller: nameController,
               decoration: const InputDecoration(
-                hintText: 'Ingrese la modificación',
+                hintText: 'Actualice el nombre',
               ),
+            ),
+            Text(
+              arguments['uid'],
+              style: const TextStyle(fontSize: 10),
             ),
             ElevatedButton(
                 onPressed: () async {
