@@ -6,7 +6,13 @@ Future<List> getPeople() async {
   List people = [];
   QuerySnapshot querySnapshot = await db.collection('people').get();
   for (var doc in querySnapshot.docs) {
-    people.add(doc.data());
+    final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final person = {
+      "name": data['name'],
+      "uid": doc.id,
+    };
+
+    people.add(person);
   }
   return people;
 }
@@ -14,4 +20,9 @@ Future<List> getPeople() async {
 // Guardar un name en base de datos
 Future<void> addPeople(String name) async {
   await db.collection("people").add({"name": name});
+}
+
+// Actualizar un name en base de datos
+Future<void> updatePeople(String uid, String newName) async {
+  await db.collection("people").doc(uid).set({"name": newName});
 }
