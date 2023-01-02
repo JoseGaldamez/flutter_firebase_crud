@@ -24,16 +24,59 @@ class _HomeState extends State<Home> {
               return ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: ((context, index) {
-                    return ListTile(
-                      title: Text(snapshot.data?[index]['name']),
-                      onTap: () async {
-                        await Navigator.pushNamed(context, '/edit', arguments: {
-                          'name': snapshot.data?[index]['name'],
-                          'uid': snapshot.data?[index]['uid'],
-                        });
+                    return Dismissible(
+                      onDismissed: ((direction) async {
+                        await deletePeople(snapshot.data?[index]['uid'])
+                            .then((value) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Eliminado'),
+                          ));
 
-                        setState(() {});
+                          snapshot.data?.removeAt(index);
+                        });
+                      }),
+                      background: Container(
+                        color: Colors.red,
+                        child: const Icon(Icons.delete),
+                      ),
+                      key: Key(snapshot.data?[index]['uid']),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss: (direction) async {
+                        final confirmed = await showDialog<bool>(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                  '¿Quieres eliminar a ${snapshot.data?[index]['name']}?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, false),
+                                  child: const Text('No'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text('Yes'),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                        return confirmed;
                       },
+                      child: ListTile(
+                        title: Text(snapshot.data?[index]['name']),
+                        onTap: () async {
+                          await Navigator.pushNamed(context, '/edit',
+                              arguments: {
+                                'name': snapshot.data?[index]['name'],
+                                'uid': snapshot.data?[index]['uid'],
+                              });
+
+                          setState(() {});
+                        },
+                      ),
                     );
                   }));
             } else {
