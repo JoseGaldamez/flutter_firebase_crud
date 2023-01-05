@@ -25,46 +25,48 @@ class _HomeState extends State<Home> {
                   itemCount: snapshot.data?.length,
                   itemBuilder: ((context, index) {
                     return Dismissible(
-                      onDismissed: ((direction) async {
-                        await deletePeople(snapshot.data?[index]['uid'])
-                            .then((value) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text('Eliminado'),
-                          ));
+                      onDismissed: (direction) async {
+                        await deletePeople(snapshot.data?[index]['uid']);
+                        snapshot.data?.removeAt(index);
+                      },
+                      confirmDismiss: (direction) async {
+                        bool result = false;
+                        result = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                    "¿Está seguro de querer eliminar a ${snapshot.data?[index]['name']}?"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        return Navigator.pop(
+                                          context,
+                                          false,
+                                        );
+                                      },
+                                      child: const Text("Cancelar",
+                                          style: TextStyle(color: Colors.red))),
+                                  TextButton(
+                                      onPressed: () {
+                                        return Navigator.pop(
+                                          context,
+                                          true,
+                                        );
+                                      },
+                                      child: const Text("Si, estoy seguro"))
+                                ],
+                              );
+                            });
 
-                          snapshot.data?.removeAt(index);
-                        });
-                      }),
+                        return result;
+                      },
                       background: Container(
                         color: Colors.red,
                         child: const Icon(Icons.delete),
                       ),
-                      key: Key(snapshot.data?[index]['uid']),
                       direction: DismissDirection.endToStart,
-                      confirmDismiss: (direction) async {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                  '¿Quieres eliminar a ${snapshot.data?[index]['name']}?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, false),
-                                  child: const Text('No'),
-                                ),
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: const Text('Yes'),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                        return confirmed;
-                      },
+                      key: Key(snapshot.data?[index]['uid']),
                       child: ListTile(
                         title: Text(snapshot.data?[index]['name']),
                         onTap: () async {
@@ -73,7 +75,6 @@ class _HomeState extends State<Home> {
                                 'name': snapshot.data?[index]['name'],
                                 'uid': snapshot.data?[index]['uid'],
                               });
-
                           setState(() {});
                         },
                       ),
