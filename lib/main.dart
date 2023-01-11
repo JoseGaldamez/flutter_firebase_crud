@@ -1,11 +1,11 @@
 import 'package:crud/pages/edit_name_page.dart';
+import 'package:crud/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 // Pages
 import 'package:crud/pages/add_name_page.dart';
-import 'package:crud/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
+      title: 'Flutter Firebase',
       initialRoute: '/',
       routes: {
-        '/': (context) => const Home(),
+        '/': (context) => const HomePage(),
         '/add': (context) => const AddNamePage(),
         '/edit': (context) => const EditNamePage(),
       },
