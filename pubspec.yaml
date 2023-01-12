@@ -40,6 +40,9 @@ dependencies:
   firebase_core: ^2.3.0
   cloud_firestore: ^4.1.0
 
+  # Select a image from the phone
+  image_picker: ^0.8.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
